@@ -1,2 +1,13 @@
 Flower API for interacting with flower table inside planthealthcare DB.
 CRUD operations exposed.
+GET all         /flowers/
+GET one         /flowers/<id>
+POST one        /flowers/
+PUT one         /flowers/<id>
+DELETE one      /flowers/<id>
+
+Building docker image:
+docker build -t [tag-name] https://github.com/markocrnic/flower-API.git
+
+Running docker image:
+docker run -d -p 5001:5000 [flower-API-tag-name]
