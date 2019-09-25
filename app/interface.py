@@ -24,10 +24,10 @@ def flowersGlobal():
             try:
                 validated = schema.validate(request.json)
             except:
-                return 'Data is not valid.'
+                return 'Data is not valid.', 403
             return implementation.postFlower(request)
     except:
-        return 'Something went wrong at /flowers/'
+        return 'Something went wrong at /flowers/', 500
 
 
 @app.route('/flowers/<int:flower_id>', methods=['GET', 'PUT', 'DELETE'])
@@ -40,10 +40,10 @@ def flowersWithID(flower_id):
         elif request.method == 'DELETE':
             return implementation.deleteFlowerByID(flower_id)
         else:
-            return "Check request again."
+            return "Check request again.", 403
     except Exception as e:
         print(e)
-        return "Something went wrong at /flowers/<int:flower_id>"
+        return "Something went wrong at /flowers/<int:flower_id>", 500
 
 
 if __name__ == '__main__':
