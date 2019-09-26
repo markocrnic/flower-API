@@ -20,12 +20,12 @@ def getAllFlowers():
             conn.close()
             return payload
         else:
-            return 'No data to return.'
+            return {'msg': 'No data to return.'}
     except Exception as e:
         c.close()
         conn.close()
         print(e)
-        return 'Something went wrong while fetching flowers.', 500
+        return {'msg': 'Something went wrong while fetching flowers.'}, 500
 
 
 def postFlower(request):
@@ -39,13 +39,13 @@ def postFlower(request):
 
         c.close()
         conn.close()
-        return "New flower added to DB.", 201
+        return {"msg": "New flower added to DB."}, 201
 
     except Exception as e:
         c.close()
         conn.close()
         print(e)
-        return "Something went wrong while inserting flower to DB.", 500
+        return {"msg": "Something went wrong while inserting flower to DB."}, 500
 
 
 def getFlowerByID(flower_id):
@@ -68,7 +68,7 @@ def getFlowerByID(flower_id):
         c.close()
         conn.close()
         print(e)
-        return "Something went while fetching flower by id.", 500
+        return {"msg": "Something went wrong while fetching flower by id."}, 500
 
 
 def putFlowerByID(request, flower_id):
@@ -81,20 +81,20 @@ def putFlowerByID(request, flower_id):
         else:
             putData = putDataCheck(request, data)
             if putData == "Something went wrong in mapping data.":
-                return "Something went wrong in mapping data.", 500
+                return {"msg": "Something went wrong in mapping data."}, 500
             c.execute('UPDATE flower SET flower_id = %s, name_ser = %s, name_lat = %s, description = %s, watering_period = %s WHERE flower_id = %s',(str(flower_id), putData[0], putData[1], putData[2], putData[3], str(flower_id)))
             conn.commit()
             print("Flower with flower_id " + str(flower_id) + " is updated.")
 
             c.close()
             conn.close()
-            return "Flower with flower_id " + str(flower_id) + " is updated."
+            return {"msg": "Flower with flower_id " + str(flower_id) + " is updated."}
 
     except Exception as e:
         c.close()
         conn.close()
         print(e)
-        return "Something went wrong while updating flower."
+        return {"msg": "Something went wrong while updating flower."}
 
 
 def deleteFlowerByID(flower_id):
@@ -103,7 +103,7 @@ def deleteFlowerByID(flower_id):
 
         data = getFlowerByID(flower_id)
         if data == "No data to return.":
-            return "Flower with flower_id " + str(flower_id) + " does not exist in DB."
+            return {"msg": "Flower with flower_id " + str(flower_id) + " does not exist in DB."}
         else:
             c.execute('DELETE FROM flower WHERE flower_id = %s', (str(flower_id)))
             conn.commit()
@@ -111,13 +111,13 @@ def deleteFlowerByID(flower_id):
 
             c.close()
             conn.close()
-            return "Flower with flower_id " + str(flower_id) + " is deleted from DB."
+            return {"msg": "Flower with flower_id " + str(flower_id) + " is deleted from DB."}
 
     except Exception as e:
         c.close()
         conn.close()
         print(e)
-        return "Something went wrong while deleting flower", 500
+        return {"msg": "Something went wrong while deleting flower"}, 500
 
 
 def putDataCheck(request, data):
