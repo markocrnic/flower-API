@@ -2,10 +2,16 @@ from dbconnect import connection
 
 import json
 
+from flask import jsonify
+
 
 def getAllFlowers():
     try:
+        # Check if circuit is open
+
         c, conn = connection()
+        if c == {'msg': 'Circuit breaker is open, reconnection in porgress'}:
+            return c, 500
 
         data = c.execute('SELECT * FROM flower')
         data = c.fetchall()
@@ -18,7 +24,7 @@ def getAllFlowers():
                 payload.append(content)
             c.close()
             conn.close()
-            return payload
+            return jsonify(payload)
         else:
             return {'msg': 'No data to return.'}
     except Exception as e:
@@ -30,7 +36,11 @@ def getAllFlowers():
 
 def postFlower(request):
     try:
+        # Check if circuit is open
+
         c, conn = connection()
+        if c == {'msg': 'Circuit breaker is open, reconnection in porgress'}:
+            return c, 500
 
         print('Starting execute')
         print(request.json['name_ser'], request.json['name_lat'], request.json['description'], request.json['watering_period'])
@@ -50,7 +60,12 @@ def postFlower(request):
 
 def getFlowerByID(flower_id):
     try:
+        # Check if circuit is open
+
         c, conn = connection()
+        if c == {'msg': 'Circuit breaker is open, reconnection in porgress'}:
+            return c, 500
+
         data = c.execute('SELECT * FROM flower where flower_id = ' + str(flower_id))
         data = c.fetchone()
         if data is not None and c.rowcount != 0:
@@ -73,7 +88,11 @@ def getFlowerByID(flower_id):
 
 def putFlowerByID(request, flower_id):
     try:
+        # Check if circuit is open
+
         c, conn = connection()
+        if c == {'msg': 'Circuit breaker is open, reconnection in porgress'}:
+            return c, 500
 
         data = getFlowerByID(flower_id)
         if data == "No data to return.":
@@ -99,13 +118,17 @@ def putFlowerByID(request, flower_id):
 
 def deleteFlowerByID(flower_id):
     try:
+        # Check if circuit is open
+
         c, conn = connection()
+        if c == {'msg': 'Circuit breaker is open, reconnection in porgress'}:
+            return c, 500
 
         data = getFlowerByID(flower_id)
         if data == "No data to return.":
             return {"msg": "Flower with flower_id " + str(flower_id) + " does not exist in DB."}
         else:
-            c.execute('DELETE FROM flower WHERE flower_id = %s', (str(flower_id)))
+            c.execute('DELETE FROM flower WHERE flower_id = ' + (str(flower_id)))
             conn.commit()
             print("Flower with flower_id " + str(flower_id) + " is deleted from DB.")
 
