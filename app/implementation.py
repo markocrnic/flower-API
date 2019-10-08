@@ -26,7 +26,7 @@ def getAllFlowers():
             conn.close()
             return jsonify(payload)
         else:
-            return {'msg': 'No data to return.'}
+            return {'msg': 'No data to return.'}, 204
     except Exception as e:
         c.close()
         conn.close()
