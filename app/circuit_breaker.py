@@ -86,6 +86,24 @@ class CircuitBreaker:
         self.error_occurrence = 0
 
 
+def check_breaker():
+    global cb
+    print('starting cb check: \n')
+    try:
+        cb
+        print('Found cb in try block\n')
+    except:
+        cb = None
+    if cb is None:
+        print('cb is None\n')
+        cb = CircuitBreaker(2, 0, 10, 5, ['OperationalError'])
+        print('Created new circuit breaker\n')
+    else:
+        print('cb is not none. Displaying values on entry to connect method')
+        cb.display()
+
+    return cb
+
 # CHECK FOR CREATED CIRCUIT BREAKERS - PASTE INTO CONNECTION FUNCTION
 '''
 def check_breaker():

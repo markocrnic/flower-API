@@ -29,7 +29,7 @@ def flowersGlobal():
         return {'msg': 'Something went wrong at /flowers/'}, 500
 
 
-@app.route('/flowers/<int:flower_id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/flowers/<int:flower_id>/', methods=['GET', 'PUT', 'DELETE'])
 def flowersWithID(flower_id):
     try:
         if request.method == 'GET':
