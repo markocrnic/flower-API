@@ -1,4 +1,4 @@
-from dbquery import querydb
+from db.dbquery import querydb
 from schema import Schema, And, Use
 
 
